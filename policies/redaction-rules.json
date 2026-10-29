@@ -1,0 +1,77 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ArchitectSkillRedactionPolicy",
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "RULE-AWS-KEY",
+      "description": "Matches AWS IAM access key identifiers",
+      "pattern": "\\b(AKIA|ABIA|ACCA|ASIA)[0-9A-Z]{16}\\b",
+      "replacement": "[REDACTED:AWS_KEY]"
+    },
+    {
+      "id": "RULE-AWS-SECRET",
+      "description": "Matches AWS secret access keys in key-value assignments",
+      "pattern": "(aws_secret_access_key|aws_sec_key)\\s*[:=]\\s*[\"']?([A-Za-z0-9/+=]{40})[\"']?",
+      "flags": "gi",
+      "replacement": "$1=\"[REDACTED:AWS_SECRET]\""
+    },
+    {
+      "id": "RULE-GITHUB-TOKEN",
+      "description": "Matches GitHub personal access and fine-grained tokens",
+      "pattern": "\\b(gh[pousr]_[A-Za-z0-9_]{36,255}|github_pat_[A-Za-z0-9_]{82})\\b",
+      "replacement": "[REDACTED:GITHUB_TOKEN]"
+    },
+    {
+      "id": "RULE-ANTHROPIC-KEY",
+      "description": "Matches Anthropic Claude API keys",
+      "pattern": "\\bsk-ant-[A-Za-z0-9_-]{20,}\\b",
+      "replacement": "[REDACTED:ANTHROPIC_KEY]"
+    },
+    {
+      "id": "RULE-OPENAI-KEY",
+      "description": "Matches OpenAI API keys",
+      "pattern": "\\bsk-(proj-)?[A-Za-z0-9_-]{32,}\\b",
+      "replacement": "[REDACTED:OPENAI_KEY]"
+    },
+    {
+      "id": "RULE-GEMINI-KEY",
+      "description": "Matches Google Gemini and Cloud API keys",
+      "pattern": "\\bAIzaSy[0-9A-Za-z_-]{33}\\b",
+      "replacement": "[REDACTED:GEMINI_API_KEY]"
+    },
+    {
+      "id": "RULE-JWT-TOKEN",
+      "description": "Matches JSON Web Tokens",
+      "pattern": "\\beyJ[A-Za-z0-9-_]+\\.eyJ[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+\\b",
+      "replacement": "[REDACTED:JWT_TOKEN]"
+    },
+    {
+      "id": "RULE-PRIVATE-KEY",
+      "description": "Matches PEM and OpenSSH private key blocks",
+      "pattern": "-----BEGIN (?:RSA |EC |OPENSSH |DSA |ENCRYPTED )?PRIVATE KEY-----[\\s\\S]+?-----END (?:RSA |EC |OPENSSH |DSA |ENCRYPTED )?PRIVATE KEY-----",
+      "replacement": "[REDACTED:PRIVATE_KEY_BLOCK]"
+    },
+    {
+      "id": "RULE-URI-PASSWORD",
+      "description": "Matches connection strings containing inline passwords",
+      "pattern": "((?:postgres|postgresql|mysql|mongodb|mongodb\\+srv|redis|rediss|amqp|amqps)://[^:\\s/]+:)(?!\\[REDACTED)([^@\\s\"']+)(@[a-zA-Z0-9.-]+)",
+      "flags": "gi",
+      "replacement": "$1[REDACTED:DB_PASSWORD]$3"
+    },
+    {
+      "id": "RULE-ANDROID-KEYSTORE",
+      "description": "Matches Android APK signing keystore passwords",
+      "pattern": "(storePassword|keyPassword)\\s*[:=]\\s*[\"'](?!\\[REDACTED)([^\"'\\s]+)[\"']",
+      "flags": "gi",
+      "replacement": "$1=\"[REDACTED:APK_KEYSTORE_SECRET]\""
+    },
+    {
+      "id": "RULE-GENERIC-SECRET",
+      "description": "Matches generic password, secret, or api_key assignments",
+      "pattern": "(\\b(?:password|passwd|secret|api_key|apikey|auth_token|client_secret|private_key)\\s*[:=]\\s*[\"'])(?!\\[REDACTED|\\{\\{SECRET)([^\"'\\s]{8,})([\"'])",
+      "flags": "gi",
+      "replacement": "$1[REDACTED:GENERIC_SECRET]$3"
+    }
+  ]
+}

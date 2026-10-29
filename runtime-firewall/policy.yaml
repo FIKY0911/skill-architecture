@@ -1,0 +1,27 @@
+version: "1.0.0"
+default_action: "block"
+rules:
+  - id: "BLOCK_NETWORK_EGRESS"
+    action: "block"
+    target: "network:*"
+  - id: "BLOCK_HOST_AI_CREDENTIALS"
+    action: "block"
+    paths:
+      - "~/.claude/auth*"
+      - "~/.cursor/**"
+      - "~/.codex/**"
+      - "~/.aws/**"
+      - "~/.ssh/**"
+  - id: "BLOCK_APP_APK_SECRETS"
+    action: "block"
+    paths:
+      - "**/.env*"
+      - "**/*.pem"
+      - "**/*.key"
+      - "**/*.keystore"
+      - "**/*.jks"
+      - "**/secrets/**"
+  - id: "ALLOW_LOCAL_DOCS_WRITE"
+    action: "allow"
+    paths:
+      - "./docs/**"

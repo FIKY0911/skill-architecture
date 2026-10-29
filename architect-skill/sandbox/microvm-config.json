@@ -1,0 +1,9 @@
+{
+  "vcpu_count": 1,
+  "mem_size_mib": 128,
+  "network_interfaces": [],
+  "drives": [
+    { "drive_id": "rootfs", "is_root_device": true, "is_read_only": true },
+    { "drive_id": "docs", "is_root_device": false, "is_read_only": false }
+  ]
+}

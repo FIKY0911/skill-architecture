@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0.0",
+  "skill_name": "architect-skill",
+  "skill_version": "1.0.0",
+  "generated_at": "{{TIMESTAMP_ISO}}",
+  "project": {
+    "name": "{{PROJECT_NAME}}",
+    "domain": "{{PROJECT_DOMAIN}}",
+    "tier": "{{WIZARD_TIER}}",
+    "architecture_style": "{{ARCHITECTURE_STYLE}}",
+    "ui_framework": "{{UI_FRAMEWORK}}",
+    "ui_aesthetic": "{{UI_AESTHETIC}}"
+  },
+  "security": {
+    "zero_egress_verified": true,
+    "secret_scan_status": "CLEAN",
+    "credentials_accessed": 0
+  },
+  "artifacts": []
+}

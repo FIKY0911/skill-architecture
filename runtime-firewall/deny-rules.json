@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0.0",
+  "default_action": "block",
+  "denied_patterns": [
+    "**/.env*",
+    "**/*.pem",
+    "**/*.key",
+    "**/*.keystore",
+    "**/*.jks",
+    "**/secrets/**",
+    "~/.ssh/**",
+    "~/.aws/**",
+    "~/.claude/auth*"
+  ]
+}

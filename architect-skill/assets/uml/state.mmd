@@ -1,0 +1,51 @@
+stateDiagram-v2
+    [*] --> Draft : CreateOrderIntent
+
+    Draft --> Cancelled : DiscardDraft
+    Draft --> AwaitingPayment : SubmitOrder [valid_items && stock_reserved]
+
+    state AwaitingPayment {
+        [*] --> InitializingGateway
+        InitializingGateway --> PollingGatewayResult : ClientTokenIssued
+        PollingGatewayResult --> PaymentReceived : WebhookAuthorized [status == 200]
+        PollingGatewayResult --> PaymentDeclined : WebhookDeclined [status == 402]
+        PollingGatewayResult --> PaymentExpired : TTL_Expired [now > lock_expires_at]
+    }
+
+    state check_retry <<choice>>
+
+    AwaitingPayment --> check_retry : HandlePaymentFailure
+    check_retry --> AwaitingPayment : RetryPayment [retry_count < 3]
+    check_retry --> Cancelled : MaxRetriesReached [retry_count >= 3]
+
+    AwaitingPayment --> Processing : PaymentVerified [signature_valid]
+
+    state Processing {
+        [*] --> VerifyingFencingToken
+        VerifyingFencingToken --> AllocatingInventory : TokenValid [token > last_fencing_token]
+        VerifyingFencingToken --> RejectedStaleWrite : TokenStale [token <= last_fencing_token]
+        AllocatingInventory --> Packaging : StockAllocated
+        Packaging --> ReadyForDispatch : QualityCheckPassed
+    }
+
+    Processing --> Shipped : CarrierManifestAssigned [tracking_code_present]
+    Processing --> Refunding : StockDeficitCompensating [out_of_stock]
+
+    Shipped --> Delivered : DeliveryConfirmationReceived
+    Shipped --> ReturnInitiated : CustomerReturnClaim [elapsed_days <= 14]
+
+    ReturnInitiated --> Refunding : ItemRestockedToWarehouse
+    ReturnInitiated --> DisputeRejected : InspectionFailed
+
+    state Refunding {
+        [*] --> CalculatingReversalAmount
+        CalculatingReversalAmount --> SubmittingGatewayRefund
+        SubmittingGatewayRefund --> RefundCompleted : GatewayACK_Received
+    }
+
+    Refunding --> Refunded : LedgerBalanced
+    DisputeRejected --> Delivered : ItemReshippedToCustomer
+
+    Delivered --> [*]
+    Refunded --> [*]
+    Cancelled --> [*]

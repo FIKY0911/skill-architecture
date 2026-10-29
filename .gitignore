@@ -1,0 +1,93 @@
+# ==============================================================================
+# architect-skill: Global Git Exclusion Rules
+# Enforces Zero-Egress, Local-First, and Absolute Credential Protection
+# ==============================================================================
+
+# Node.js and Package Management
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Runtime Transient State & Sockets
+.architect-wizard-state.json
+.wizard-state.json
+*.sock
+*.pid
+
+# Local Audit Logs and Cache
+.architect-audit.log
+*.log
+.cache/
+.temp/
+tmp/
+temp/
+
+# Absolute Secret & Credential Exclusions
+.env
+.env.*
+*.env
+*.env.local
+*.env.development.local
+*.env.test.local
+*.env.production.local
+
+# Private Keys, Certificates, and Enclaves
+*.pem
+*.key
+*.keystore
+*.crt
+*.cer
+*.der
+*.p12
+*.pfx
+*.jks
+id_rsa*
+id_ecdsa*
+id_ed25519*
+known_hosts
+authorized_keys
+
+# Credential and Identity Directories
+credentials/
+secrets/
+private/
+.ssh/
+.aws/
+.gnupg/
+
+# Local Installer Backups
+.architect-skill-backup/
+*.bak
+*.backup
+
+# Operating System and IDE Artifacts
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE Settings (allow shared config, exclude local user state)
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.swp
+*.swo
+*~
+
+# Test Coverage & Compilation Outputs
+coverage/
+.nyc_output/
+dist/
+build/
+out/

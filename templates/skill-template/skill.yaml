@@ -1,0 +1,8 @@
+schema_version: "1.0"
+name: "{{SKILL_NAME}}"
+version: "1.0.0"
+permissions:
+  network: "none"
+  filesystem:
+    read: ["./references", "./assets"]
+    write: ["./docs"]

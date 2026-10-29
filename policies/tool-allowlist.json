@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0.0",
+  "default_action": "deny",
+  "allowed_tools": [
+    "scripts/install.js",
+    "scripts/validate-mermaid.js",
+    "scripts/validate-structure.js",
+    "scripts/validate-output.js",
+    "scripts/secret-scan.js",
+    "scripts/egress-guard.js",
+    "scripts/audit-log.js",
+    "scripts/sanitize-input.js",
+    "scripts/wizard-state.js",
+    "scripts/doctor.js",
+    "runtime-firewall/verify.js"
+  ]
+}

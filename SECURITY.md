@@ -1,0 +1,4 @@
+# SECURITY
+
+Placeholder security policy.
+

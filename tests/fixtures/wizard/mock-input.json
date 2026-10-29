@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "tier": "tier2",
+  "project_name": "saweria-clone-creator-monetization",
+  "preset": "full-stack-web",
+  "selections": {
+    "requirements": ["PRD", "BRD", "SRD"],
+    "architecture_style": "clean-architecture",
+    "system_design": [
+      "caching-redis",
+      "distributed-locking",
+      "rdbms-scaling",
+      "async-message-queue",
+      "rate-limiting"
+    ],
+    "diagrams": [
+      "sequence",
+      "erd",
+      "state",
+      "c4-container",
+      "activity"
+    ],
+    "ui_library": "tailwind-shadcn",
+    "fe_aesthetic": "neubrutalism"
+  }
+}

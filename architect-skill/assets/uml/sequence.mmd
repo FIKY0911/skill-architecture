@@ -1,0 +1,76 @@
+sequenceDiagram
+    autonumber
+    actor User as Customer (Browser/Mobile)
+    participant Client as Single Page App (Client)
+    participant GW as API Gateway / Reverse Proxy
+    participant Auth as Identity & Auth Service
+    participant Order as Order Processing Service
+    participant DB as Relational Database (PostgreSQL)
+    participant Broker as Message Broker (Kafka/RabbitMQ)
+    participant Payment as External Payment Provider
+
+    Note over User,Client: Phase 1: Authentication & Token Verification
+    User->>Client: Submit Checkout Form (Items, Shipping)
+    activate Client
+    Client->>GW: POST /api/v1/orders (Payload + JWT access token)
+    activate GW
+    GW->>Auth: Validate Token & Scopes (Introspection)
+    activate Auth
+    alt Token is Valid & Active
+        Auth-->>GW: 200 OK (Claims: userId, roles, tenantId)
+    else Token Expired or Tampered
+        Auth-->>GW: 401 Unauthorized (Error: INVALID_CREDENTIALS)
+        GW-->>Client: 401 Unauthorized
+        Client-->>User: Prompt Session Refresh / Relogin
+    end
+    deactivate Auth
+
+    Note over GW,Order: Phase 2: Transaction Initiation & Idempotency Check
+    GW->>Order: POST /internal/orders (Payload + Context Headers)
+    activate Order
+    Order->>DB: SELECT * FROM idempotency_keys WHERE key = :idempotencyKey
+    activate DB
+    DB-->>Order: Record not found (New transaction allowed)
+    deactivate DB
+
+    Order->>DB: BEGIN TRANSACTION
+    activate DB
+    Order->>DB: INSERT INTO orders (id, user_id, status, total) VALUES (...)
+    Order->>DB: INSERT INTO outbox_events (id, aggregate_type, payload) VALUES (...)
+    Order->>DB: COMMIT TRANSACTION
+    DB-->>Order: Transaction Committed (Order ID: ord_01H8X)
+    deactivate DB
+
+    Note over Order,Payment: Phase 3: External Payment Capture
+    Order->>Payment: POST /v1/charges (Amount, Currency, CardToken)
+    activate Payment
+    alt Payment Succeeded
+        Payment-->>Order: 200 OK (Transaction: ch_3N8xYz, Status: SUCCEEDED)
+        Order->>DB: UPDATE orders SET status = 'PAID' WHERE id = 'ord_01H8X'
+        activate DB
+        DB-->>Order: Row Updated (1 row)
+        deactivate DB
+
+        Note over Order,Broker: Phase 4: Asynchronous Integration Event Publishing
+        Order-)Broker: Publish 'order.paid' Event (Partition Key: ord_01H8X)
+        activate Broker
+        Broker-->>Order: ACK (Offset: 489201)
+        deactivate Broker
+
+        Order-->>GW: 201 Created (Order DTO + Receipt URL)
+        GW-->>Client: 201 Created (Order Confirmation)
+        Client-->>User: Render Order Success & Tracking View
+    else Payment Declined / Insufficient Funds
+        Payment-->>Order: 402 Payment Required (DeclineCode: INSUFFICIENT_FUNDS)
+        Order->>DB: UPDATE orders SET status = 'PAYMENT_FAILED' WHERE id = 'ord_01H8X'
+        activate DB
+        DB-->>Order: Row Updated (1 row)
+        deactivate DB
+        Order-->>GW: 402 Payment Required (ErrorCode: PAYMENT_DECLINED)
+        GW-->>Client: 402 Payment Required
+        Client-->>User: Display Payment Decline Message & Retry Options
+    end
+    deactivate Payment
+    deactivate Order
+    deactivate GW
+    deactivate Client

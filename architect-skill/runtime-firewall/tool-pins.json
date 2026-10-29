@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0.0",
+  "algorithm": "SHA-256",
+  "pins": {
+    "scripts/egress-guard.js": "c21125f436ca6d87b781a7a90db2d7fd05753e7bd56b8364bd9dc325e94d915d",
+    "scripts/sanitize-input.js": "ed1a0141fbeecc5bcefb714ffedc2546ec40de93ddddd7ca07196b6dbaed864d",
+    "scripts/secret-scan.js": "03584c0b825a43d6226dfd49a7e90980a8ce76f59b34f6af7c807f135f95ffac",
+    "scripts/audit-log.js": "ff34cff89b691a55603097e8f5a0da25b339a3c580530a25cf30d51fb9003fb3",
+    "scripts/validate-mermaid.js": "f3fdfa06fab2cb9b036783d3bb06bc75a073312572d37c90b1cea81e01951951",
+    "scripts/validate-structure.js": "bd49e387cd2d163babd1d120c11da237b458cb0919cf6b5325d13ba0420738c8",
+    "scripts/validate-output.js": "e4a67f2b643d34acbdc4c39be3ffc5681f7f25eb4db720d38b4b1f047fd26ce6",
+    "scripts/wizard-state.js": "b5e872c7a75f79ba366093c4e58cfbc7b1b2d75f0db7ceefbc6a9e62e810025c",
+    "scripts/install.js": "64b52fae59effc788683354c0fba080f368b1b59590994a95269c74c25aa9d55",
+    "scripts/doctor.js": "0d434b203f02cdd6ac60e981c6799ea366a392cfd8919564629a8e658bd13a24",
+    "scripts/validate-ui-slop.js": "7a85894a1a21f09426cab13e9b5a28ac2b1c422a9de5130fc8d51f4b0bb78023",
+    "scripts/validate-diagrams.js": "c6250c620c7844c77901f29be9a39f5d5cb16672a26262b98b7ec97dca795fa9"
+  }
+}

@@ -1,0 +1,61 @@
+flowchart TD
+    subgraph Client ["Client Layer (User Interface)"]
+        startNode([Start: User Submits Order]) --> submitRequest[Dispatch POST /api/v1/orders]
+        renderSuccess[Render Order Confirmation & Receipt]
+        renderFailure[Display Clear Error with Recovery Action]
+    end
+
+    subgraph Gateway ["API Gateway / Reverse Proxy"]
+        submitRequest --> rateLimitCheck{"Rate Limit Exceeded?<br/>(Sliding Window Check)"}
+        rateLimitCheck -- Yes --> return429[Emit HTTP 429 Too Many Requests]
+        rateLimitCheck -- No --> authCheck{"JWT Access Token Valid & Active?"}
+        authCheck -- Invalid --> return401[Emit HTTP 401 Unauthorized]
+        authCheck -- Valid --> forwardCore[Route to Core Order Service]
+        return429 --> renderFailure
+        return401 --> renderFailure
+    end
+
+    subgraph OrderCore ["Core Order Processing Engine"]
+        forwardCore --> acquireLock[Acquire Distributed Mutex<br/>Generate Monotonic Fencing Token]
+        acquireLock --> checkInventory{"Inventory Count >= Quantity?<br/>(SELECT FOR UPDATE)"}
+        
+        checkInventory -- Insufficient --> releaseLockDeficit[Compensate & Release Mutex]
+        releaseLockDeficit --> return409[Emit HTTP 409 Conflict: Insufficient Stock]
+        return409 --> renderFailure
+
+        checkInventory -- Available --> reserveStock[Reserve Inventory Count]
+        reserveStock --> insertOrderPending[Insert Order Row: PENDING_PAYMENT]
+        insertOrderPending --> forkProcessing[Fork Concurrency Branch]
+
+        forkProcessing --> callPayment[Dispatch Synchronous Payment Capture]
+        forkProcessing --> appendAudit[Write Cryptographic Audit Log Entry]
+    end
+
+    subgraph PaymentGateway ["External Payment Provider"]
+        callPayment --> chargeCard{"Execute Card Authorization"}
+        chargeCard -- Declined --> paymentFailed[Emit Gateway Decline Code]
+        chargeCard -- Approved --> paymentSuccess[Emit Gateway Transaction ID]
+    end
+
+    subgraph AsyncPipeline ["Transactional Outbox & Settlement"]
+        paymentFailed --> rollbackStock[Compensating Action: Revert Stock Allocation]
+        rollbackStock --> updateFailed[Update Order Status: PAYMENT_FAILED]
+        updateFailed --> releaseLockErr[Release Distributed Mutex]
+        releaseLockErr --> return402[Emit HTTP 402 Payment Required]
+        return402 --> renderFailure
+
+        paymentSuccess --> joinSync[Join: Verify Both Branches Completed]
+        appendAudit --> joinSync
+        joinSync --> updatePaid[Update Order: PAID + Record Fencing Token]
+        updatePaid --> writeOutbox[Insert Outbox Event: order.paid]
+        writeOutbox --> releaseLockSuccess[Release Distributed Mutex]
+        releaseLockSuccess --> return201[Emit HTTP 201 Created]
+        return201 --> renderSuccess
+
+        writeOutbox -. Asynchronous Poller / CDC .-> pollerRead[Worker Reads Outbox Record]
+        pollerRead --> publishTopic[Publish Integration Event to Kafka]
+        publishTopic --> dispatchNotice[Dispatch Customer Confirmation Email]
+    end
+
+    renderSuccess --> endSuccess([End: Order Completed Successfully])
+    renderFailure --> endAborted([End: Transaction Terminated Safely])

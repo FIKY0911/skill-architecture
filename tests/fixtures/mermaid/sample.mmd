@@ -1,0 +1,17 @@
+sequenceDiagram
+    autonumber
+    participant Client as Web Client
+    participant Gateway as API Gateway
+    participant Service as Order Service
+    participant DB as PostgreSQL
+
+    Client->>Gateway: POST /api/v1/orders
+    Gateway->>Service: createOrder(dto)
+    alt Stock Available
+        Service->>DB: INSERT INTO orders
+        DB-->>Service: OrderCreated
+        Service-->>Gateway: 201 Created
+    else Out of Stock
+        Service-->>Gateway: 409 Conflict
+    end
+    Gateway-->>Client: HTTP Response

@@ -1,0 +1,28 @@
+name: CI Validation & Integrity
+on: [push, pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Verify Script Syntax
+        run: |
+          for f in scripts/*.js runtime-firewall/*.js broker/*.js; do
+            node -c "$f"
+          done
+      - name: Run Structure, Mermaid, and Doctor Checks
+        run: |
+          node scripts/validate-structure.js
+          node scripts/validate-mermaid.js
+          node scripts/doctor.js
+          node runtime-firewall/verify.js
+      - name: Run Automated Test Suites
+        run: |
+          node tests/egress-offline.test.js
+          node tests/secret-scan.test.js
+          node tests/install.test.js
+          node tests/output-integrity.test.js
+          node tests/e2e/runner.js

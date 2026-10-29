@@ -1,0 +1,7 @@
+sequenceDiagram
+    participant Client
+    participant Server
+    Client->>Server: Request
+    alt Valid Request
+        Server-->>Client: 200 OK
+    %% Missing closing end for alt block and unbalanced brace {

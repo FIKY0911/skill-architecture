@@ -1,0 +1,6 @@
+{
+  "abi_version": 4,
+  "fs_read_only": ["/usr", "/lib", "./assets", "./references", "./policies", "./scripts"],
+  "fs_read_write": ["./docs"],
+  "net_tcp_connect": []
+}

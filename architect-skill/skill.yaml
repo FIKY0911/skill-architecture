@@ -1,0 +1,123 @@
+schema_version: "1.0"
+
+metadata:
+  name: "architect-skill"
+  version: "1.0.0"
+  description: "Enterprise-grade, local-first, zero-egress software architecture generator and specification framework for AI agents."
+  author: "John McCarthy & Architect Skill Contributors"
+  license: "MIT"
+  repository: "https://github.com/example/architect-skill"
+  tags:
+    - architecture
+    - system-design
+    - requirements
+    - prd
+    - brd
+    - srd
+    - clean-architecture
+    - modular-monolith
+    - event-driven
+    - uml
+    - mermaid
+    - ui-design
+    - zero-egress
+    - local-first
+
+token_limits:
+  max_input_tokens: 150
+  max_output_tokens: 30
+  step_token_budget: 30
+output_style: high_level_concise
+  max_input_tokens: 150
+  max_output_tokens: 30
+  step_token_budget: 30
+
+compatibility:
+  platforms:
+    - id: "claude"
+      name: "Claude Code & Desktop"
+      supported: true
+      min_version: "1.0.0"
+      adapter: "adapters/claude/SKILL.md"
+    - id: "cursor"
+      name: "Cursor IDE"
+      supported: true
+      min_version: "0.40.0"
+      adapter: "adapters/cursor/architect-skill.mdc"
+    - id: "continue"
+      name: "Continue.dev"
+      supported: true
+      min_version: "0.8.0"
+      adapter: "adapters/continue/architect-skill.prompt"
+    - id: "windsurf"
+      name: "Codeium Windsurf (Cascade)"
+      supported: true
+      min_version: "1.0.0"
+      adapter: "adapters/windsurf/.windsurfrules"
+    - id: "cline"
+      name: "Cline Autonomous Agent"
+      supported: true
+      min_version: "2.0.0"
+      adapter: "adapters/cline/.clinerules"
+    - id: "codex"
+      name: "OpenAI Codex / CLI Agent"
+      supported: true
+      min_version: "1.0.0"
+      adapter: "adapters/codex/SKILL.md"
+    - id: "antigravity"
+      name: "Google Antigravity Agent"
+      supported: true
+      min_version: "1.0.0"
+      adapter: "adapters/antigravity/SKILL.md"
+
+runtime:
+  engine: "node"
+  min_version: "18.0.0"
+  dependencies: "none" # 100% zero-dependency Node.js standard library
+
+permissions:
+  network:
+    egress: "none" # Total network isolation
+    ingress: "none"
+    allowlist: []
+  filesystem:
+    read:
+      - "./assets/**"
+      - "./references/**"
+      - "./policies/**"
+      - "./templates/**"
+      - "./scripts/**"
+    write:
+      - "./docs/**"
+      - "~/.architect-skill-backup/**"
+    forbidden:
+      - "**/.env*"
+      - "**/*.pem"
+      - "**/*.key"
+      - "**/*.keystore"
+      - "**/*.crt"
+      - "**/secrets/**"
+      - "**/credentials/**"
+      - "~/.ssh/**"
+      - "~/.aws/**"
+      - "~/.claude/auth*"
+
+entrypoints:
+  orchestrator: "SKILL.md"
+  installer: "scripts/install.js"
+  installer_sh: "scripts/install.sh"
+  validator_mermaid: "scripts/validate-mermaid.js"
+  validator_diagrams: "scripts/validate-diagrams.js"
+  validator_structure: "scripts/validate-structure.js"
+  validator_output: "scripts/validate-output.js"
+  secret_scanner: "scripts/secret-scan.js"
+  egress_guard: "scripts/egress-guard.js"
+  audit_logger: "scripts/audit-log.js"
+  input_sanitizer: "scripts/sanitize-input.js"
+  wizard_state: "scripts/wizard-state.js"
+  doctor: "scripts/doctor.js"
+
+policies:
+  filesystem_scope: "policies/filesystem-scope.json"
+  network_allowlist: "policies/network-allowlist.json"
+  redaction_rules: "policies/redaction-rules.json"

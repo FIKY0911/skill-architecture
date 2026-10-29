@@ -1,0 +1,120 @@
+erDiagram
+    ORGANIZATION ||--o{ USER : "contains"
+    USER ||--o{ USER_ROLE : "assigned_to"
+    ROLE ||--o{ USER_ROLE : "defines"
+    ORGANIZATION ||--o{ ORDER : "owns"
+    USER ||--o{ ORDER : "places"
+    ORDER ||--|{ ORDER_ITEM : "contains"
+    PRODUCT ||--o{ ORDER_ITEM : "referenced_in"
+    ORDER ||--o| PAYMENT : "settled_via"
+    ORDER ||--o{ OUTBOX_EVENT : "emits"
+    USER ||--o{ AUDIT_LOG : "triggers"
+
+    ORGANIZATION {
+        uuid id PK "Primary Key"
+        string name "Organization legal entity name"
+        string slug "Unique URL-friendly slug"
+        string tier "Billing tier: free, pro, enterprise"
+        boolean is_active "Account status flag"
+        timestamp created_at "Creation timestamp UTC"
+        timestamp updated_at "Last update timestamp UTC"
+    }
+
+    USER {
+        uuid id PK "Primary Key"
+        uuid organization_id FK "References ORGANIZATION(id)"
+        string email "Unique email address"
+        string password_hash "Argon2id password hash"
+        string full_name "User display name"
+        string status "ACTIVE, SUSPENDED, PENDING_VERIFICATION"
+        int failed_login_attempts "Rate-limiting counter"
+        timestamp last_login_at "Nullable timestamp"
+        timestamp created_at "Creation timestamp UTC"
+        timestamp updated_at "Last update timestamp UTC"
+    }
+
+    ROLE {
+        uuid id PK "Primary Key"
+        string code "Unique code: super_admin, org_admin, member, readonly"
+        string description "Role responsibility definition"
+        jsonb permissions "Array of permission grants"
+        timestamp created_at "Creation timestamp UTC"
+    }
+
+    USER_ROLE {
+        uuid user_id PK,FK "References USER(id)"
+        uuid role_id PK,FK "References ROLE(id)"
+        timestamp assigned_at "Assignment timestamp UTC"
+    }
+
+    PRODUCT {
+        uuid id PK "Primary Key"
+        uuid organization_id FK "References ORGANIZATION(id)"
+        string sku "Stock keeping unit unique per org"
+        string title "Product name"
+        decimal price "Current retail price"
+        string currency "ISO 4217 3-letter currency code"
+        int stock_quantity "Current inventory count"
+        int version "Optimistic lock version token"
+        timestamp created_at "Creation timestamp UTC"
+        timestamp updated_at "Last update timestamp UTC"
+    }
+
+    ORDER {
+        uuid id PK "Primary Key"
+        uuid organization_id FK "References ORGANIZATION(id)"
+        uuid user_id FK "References USER(id)"
+        string order_number "Human-readable order identifier"
+        string status "DRAFT, PENDING_PAYMENT, PAID, CANCELLED, FULFILLED"
+        decimal total_amount "Total sum payable"
+        string currency "ISO 4217 3-letter currency code"
+        string idempotency_key "Unique request token"
+        bigint fencing_token "Monotonically increasing sequence"
+        timestamp created_at "Creation timestamp UTC"
+        timestamp updated_at "Last update timestamp UTC"
+    }
+
+    ORDER_ITEM {
+        uuid id PK "Primary Key"
+        uuid order_id FK "References ORDER(id)"
+        uuid product_id FK "References PRODUCT(id)"
+        int quantity "Item purchase quantity"
+        decimal unit_price "Price at moment of checkout"
+        decimal subtotal "Quantity * unit_price"
+    }
+
+    PAYMENT {
+        uuid id PK "Primary Key"
+        uuid order_id FK "References ORDER(id) unique 1-to-1"
+        string provider "stripe, adyen, midtrans"
+        string external_transaction_id "Gateway reference ID"
+        decimal amount "Settled monetary amount"
+        string currency "ISO 4217 code"
+        string status "PENDING, SUCCEEDED, FAILED, REFUNDED"
+        jsonb metadata "Gateway raw response without sensitive PAN"
+        timestamp settled_at "Settlement timestamp UTC"
+        timestamp created_at "Creation timestamp UTC"
+    }
+
+    OUTBOX_EVENT {
+        uuid id PK "Primary Key"
+        string aggregate_type "Entity name: Order, User, Payment"
+        uuid aggregate_id "Primary key of target entity"
+        string event_type "e.g. order.created, order.paid"
+        jsonb payload "Event Carried State Transfer payload"
+        boolean published "Published flag for log poller"
+        timestamp created_at "Creation timestamp UTC"
+        timestamp published_at "Nullable publish timestamp UTC"
+    }
+
+    AUDIT_LOG {
+        uuid id PK "Primary Key"
+        uuid user_id FK "References USER(id)"
+        string action "e.g. USER_LOGIN, ORDER_PAID, ROLE_MODIFIED"
+        string resource_type "Affected resource entity"
+        string resource_id "Affected resource identifier"
+        string ip_address "Anonymized client IP"
+        string user_agent "Client User-Agent header"
+        jsonb diff "State changes with secrets masked"
+        timestamp created_at "Immutable event timestamp UTC"
+    }

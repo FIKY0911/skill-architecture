@@ -1,0 +1,41 @@
+{
+  "schema_version": "1.0.0",
+  "allowedRoots": {
+    "read": [
+      "./assets",
+      "./references",
+      "./policies",
+      "./templates",
+      "./docs"
+    ],
+    "write": [
+      "./docs",
+      "~/.architect-skill-backup"
+    ]
+  },
+  "blockedPaths": [
+    "**/.env",
+    "**/.env.*",
+    "**/*.env",
+    "**/*.pem",
+    "**/*.key",
+    "**/*.keystore",
+    "**/*.jks",
+    "**/*.p12",
+    "**/*.pfx",
+    "**/id_rsa*",
+    "**/id_ed25519*",
+    "**/credentials*",
+    "**/secrets/**",
+    "~/.ssh/**",
+    "~/.aws/**",
+    "~/.config/**",
+    "~/.claude/auth*",
+    "~/.cursor/**",
+    "~/.codex/**"
+  ],
+  "pathTraversalValidation": {
+    "rejectNullBytes": true,
+    "enforceCanonicalResolution": true
+  }
+}

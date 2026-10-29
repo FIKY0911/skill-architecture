@@ -1,0 +1,7 @@
+{
+  "schema_version": "1.0.0",
+  "mode": "strict-zero-egress",
+  "description": "Default empty allowlist enforcing 100% local-first offline execution without external network calls.",
+  "allowed_hosts": [],
+  "allowed_ports": []
+}

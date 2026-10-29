@@ -1,0 +1,44 @@
+C4Container
+    title Container Diagram for Enterprise Architecture Platform
+
+    Person(customer, "Customer", "External user accessing platform services via web browser or mobile application.")
+    Person(admin, "Platform Admin", "Internal operations specialist managing tenants, catalog configurations, and audit policies.")
+
+    System_Boundary(platform_boundary, "Enterprise Platform Boundary") {
+        Container(spa_web, "Single Page Application", "TypeScript, React, Tailwind CSS", "Delivers responsive web interface, local UI state management, and accessible component shell.")
+        Container(mobile_app, "Mobile Client", "React Native / Kotlin / Swift", "Provides mobile user experience with local encrypted SQLite storage and offline-first queue.")
+        Container(api_gateway, "API Gateway / Reverse Proxy", "Envoy / NGINX / Traefik", "Terminates TLS, enforces rate limiting, sanitizes request paths, and routes traffic.")
+        
+        Container(auth_service, "Identity & Access Service", "Node.js / Go / Rust", "Issues RS256 JWT tokens, manages user directory, and evaluates RBAC permission policies.")
+        Container(core_api, "Core Application Engine", "TypeScript / Modular Monolith / Clean Architecture", "Executes domain use-cases, enforces invariants, manages fencing tokens, and writes to Outbox.")
+        Container(event_worker, "Async Worker Service", "Node.js / Go Background Worker", "Consumes outbox events, dispatches notifications, and processes deferred reconciliations.")
+
+        ContainerDb(primary_db, "Primary Relational Database", "PostgreSQL 16", "Stores normalized transactional entities, user tables, and outbox event tables with ACID safety.")
+        ContainerDb(redis_cluster, "Distributed Cache & Lock", "Redis 7 Cluster", "Stores sliding-window rate limit counters, cache-aside queries, and distributed mutexes.")
+        ContainerQueue(message_broker, "Enterprise Message Broker", "Apache Kafka / RabbitMQ", "Durable commit log for inter-service integration events with at-least-once delivery.")
+    }
+
+    System_Ext(payment_gateway, "External Payment Gateway", "Stripe / Adyen / Local Settlement", "Securely tokenizes credit card instruments and processes monetary transfers.")
+    System_Ext(notification_provider, "Notification Provider", "Postmark / SendGrid / Firebase Cloud Messaging", "Delivers transactional emails, SMS codes, and mobile push notifications.")
+
+    Rel(customer, spa_web, "Browses and transacts via", "HTTPS (Port 443)")
+    Rel(customer, mobile_app, "Interacts with mobile UI via", "HTTPS")
+    Rel(admin, spa_web, "Performs back-office administrative tasks", "HTTPS")
+
+    Rel(spa_web, api_gateway, "Dispatches REST API invocations", "JSON / HTTPS")
+    Rel(mobile_app, api_gateway, "Dispatches REST API invocations", "JSON / HTTPS")
+
+    Rel(api_gateway, auth_service, "Validates credentials and scopes", "gRPC / Internal Network")
+    Rel(api_gateway, core_api, "Forwards authenticated requests", "HTTP/2 / Reverse Proxy")
+
+    Rel(core_api, redis_cluster, "Performs cache queries and acquires locks", "RESP3 Protocol (Port 6379)")
+    Rel(core_api, primary_db, "Executes transactional reads and writes", "PostgreSQL Wire Protocol (Port 5432)")
+    Rel(core_api, message_broker, "Relays transactional outbox events to", "TCP (Port 9092)")
+
+    Rel(event_worker, message_broker, "Polls and acknowledges event topics", "Kafka Consumer Protocol")
+    Rel(event_worker, primary_db, "Updates async job completion status", "PostgreSQL Wire Protocol")
+
+    Rel(core_api, payment_gateway, "Initiates synchronous payment capture", "HTTPS / REST API")
+    Rel(event_worker, notification_provider, "Triggers outbound customer notifications", "HTTPS / REST API")
+
+    UpdateLayoutConfig($c4ShapeInRow="3", $c4BoundaryInRow="1")
