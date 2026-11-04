@@ -22,7 +22,12 @@ To initialize state directly with existing requirements bypassed:
 node scripts/wizard-state.js init --project my-platform --skip-requirements
 ```
 
-## 3. Resuming Wizard Sessions
+## 3. Dual-Track Context & Token Economy
+To optimize context window usage and ensure developer safety:
+- **Trivial / Non-Technical Queries**: Deliver concise high-level summaries and immediate conclusions without unnecessary preambles or deep technical breakdowns.
+- **Heavy Technical Challenges**: Perform deep, rigorous first-principles analysis until finding the complete solution, but strictly require explicit developer approval before performing any file edits, command execution, or system changes.
+
+## 4. Resuming Wizard Sessions
 ```bash
 node scripts/wizard-state.js init my-platform
 node scripts/wizard-state.js status

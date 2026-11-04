@@ -18,6 +18,10 @@ Alur kerja dimulai dari **Requirement** → **Arsitektur** → **Desain Sistem**
 
 > **Catatan Fast-Track Requirement:** Jika pengguna sudah memiliki atau melampirkan salah satu atau seluruh dokumen kebutuhan (`PRD.md`, `BRD.md`, `SRD.md`), sistem akan langsung membaca dokumen tersebut dan melompat langsung ke tahap **Arsitektur** tanpa menanyakan opsi pembuatan dokumen kebutuhan kembali.
 
+> **Prinsip Dual-Track Token & Context Economy:** Pertanyaan sepele atau non-teknis diselesaikan secara ringkas dengan kesimpulan tingkat tinggi demi efisiensi token. Untuk masalah teknis berat, agen melakukan analisis komprehensif hingga tuntas dan **wajib meminta persetujuan developer** sebelum melakukan perubahan berkas atau sistem.
+
+> **Isolasi Privasi Lokal 100%:** Seluruh memori, riwayat desain, dan artefak wajib disimpan secara lokal tanpa tersinkronisasi ke cloud, mencegah kebocoran data untuk pelatihan AI.
+
 ---
 
 ## 2. Hubungan Antara Dokumen

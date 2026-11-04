@@ -17,9 +17,11 @@ Unlike typical AI prompts that produce superficial code suggestions or make ungr
 
 ### Foundational Principles:
 1. **Primacy of Logic over Heuristics**: All architectural paradigms, system design trade-offs, and requirement clauses are rooted in formal standards (ISO/IEC/IEEE 29148:2018, BABOK Guide v3, Atlassian Agile PRD, Robert C. Martin, Martin Fowler, Martin Kleppmann).
-2. **Absolute Zero-Egress & Local-First**: 100% offline execution. No outbound network requests, no remote telemetry, no external API dependence.
-3. **Absolute Credential Protection**: The skill is structurally prohibited from reading `.env` files, certificates, private keys, or agent authentication tokens. Built-in secret scanning and automatic masking neutralize stray credentials before write operations.
-4. **Constructive Minimalism**: Pure Node.js implementation without external npm dependencies (`zero-dependency`), eliminating software supply chain risks.
+2. **Existing Requirements Fast-Track**: If a user brings an existing PRD, BRD, or SRD (or any subset), the system auto-ingests the documents directly and bypasses Stage 1 to proceed to Stage 2 architecture modeling without redundant elicitation questions.
+3. **Dual-Track Context & Token Economy**: Trivial, high-level, and non-technical questions are answered concisely with immediate conclusions to save tokens and context window. Heavy technical challenges undergo deep first-principles analysis until resolved, followed by an explicit developer approval gate before files or systems are modified.
+4. **Absolute Zero-Egress & Local-First**: 100% offline execution. No outbound network requests, no remote telemetry, no external API dependence. All memories, vibe-coding artifacts, and state are strictly persisted locally, eliminating cloud training risks.
+5. **Absolute Credential Protection**: The skill is structurally prohibited from reading `.env` files, system credentials, SSH/AWS keys, certificates, private keys, or agent authentication tokens. Built-in secret scanning and automatic masking neutralize stray credentials before write operations.
+6. **Constructive Minimalism**: Pure Node.js implementation without external npm dependencies (`zero-dependency`), eliminating software supply chain risks.
 
 ---
 

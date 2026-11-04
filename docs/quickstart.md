@@ -78,6 +78,9 @@ You can pre-seed or resume the interactive wizard via CLI or let the AI agent ru
 # Initialize a new session in ./docs/.architect-wizard-state.json
 node scripts/wizard-state.js init my-saas-platform
 
+# Fast-track initialization when PRD/BRD/SRD documents already exist (bypasses Stage 1)
+node scripts/wizard-state.js init --project my-saas-platform --skip-requirements
+
 # Inspect active session state
 node scripts/wizard-state.js status
 
