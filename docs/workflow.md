@@ -16,6 +16,8 @@ Proyek ini terdiri dari beberapa domain utama:
 
 Alur kerja dimulai dari **Requirement** → **Arsitektur** → **Desain Sistem** → **Implementasi** → **UI** → **Testing** → **Release**.
 
+> **Catatan Fast-Track Requirement:** Jika pengguna sudah memiliki atau melampirkan salah satu atau seluruh dokumen kebutuhan (`PRD.md`, `BRD.md`, `SRD.md`), sistem akan langsung membaca dokumen tersebut dan melompat langsung ke tahap **Arsitektur** tanpa menanyakan opsi pembuatan dokumen kebutuhan kembali.
+
 ---
 
 ## 2. Hubungan Antara Dokumen

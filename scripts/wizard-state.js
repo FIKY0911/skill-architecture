@@ -44,9 +44,10 @@ function initState(options = {}, stateFilePath = DEFAULT_STATE_PATH) {
     status: 'in_progress',
     tier: options.tier === 'tier1' ? 'tier1' : 'tier2',
     project_name: sanitizeIdentifier(options.project || 'enterprise-system'),
-    current_stage: 0,
+    current_stage: options.skip_requirements || options.existing_requirements ? 2 : (options.stage !== undefined ? options.stage : 0),
     selections: {
       requirements: options.requirements || ['PRD', 'BRD', 'SRD'],
+      requirements_source: options.skip_requirements || options.existing_requirements ? 'provided' : 'elicited',
       architecture_style: options.architecture || 'clean-architecture',
       ui_library: VALID_UI_LIBRARIES.includes(options.ui_library)
         ? options.ui_library
@@ -92,7 +93,15 @@ function finalizeState(stateFilePath = DEFAULT_STATE_PATH) {
 if (require.main === module) {
   const cmd = process.argv[2] || 'status';
   if (cmd === 'init') {
-    const res = initState({ project: process.argv[3] || 'architect-project' });
+    const args = process.argv.slice(3);
+    const opts = { project: 'architect-project' };
+    for (let i = 0; i < args.length; i++) {
+      if (args[i] === '--tier' && args[i + 1]) opts.tier = args[++i];
+      else if (args[i] === '--project' && args[i + 1]) opts.project = args[++i];
+      else if (args[i] === '--skip-requirements' || args[i] === '--existing-requirements') opts.skip_requirements = true;
+      else if (!args[i].startsWith('--')) opts.project = args[i];
+    }
+    const res = initState(opts);
     console.log(JSON.stringify(res, null, 2));
   } else if (cmd === 'finalize') {
     const res = finalizeState();

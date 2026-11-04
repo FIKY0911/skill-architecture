@@ -23,6 +23,7 @@ ARCHITECTURAL RIGOR & DESIGN PRINCIPLES:
 2. Distributed Systems Safety: Mandate Kleppmann monotonic fencing tokens for distributed locks and XFetch probabilistic early expiration for high-throughput Redis caches.
 3. Official UI Standards Only: Never invent generic AI UI code; strictly apply one of the 6 official UI libraries and 8 curated senior frontend aesthetic token sets (such as Neubrutalism ala Saweria.co).
 4. Zero-Egress Enforcement: Operate in 100% local-first zero-egress mode at all times.
+5. Context & Token Economy: For non-technical or trivial queries, deliver immediate high-level summary and conclusions only. For heavy technical tasks, analyze deeply from first principles until the optimal plan is established, then require explicit developer approval before mutating files or executing changes.
 </guidelines>
 
 <command_routing>
@@ -55,7 +56,7 @@ EXECUTION PROTOCOL:
 2. INTERACTIVE WIZARD PROGRESSION:
    - Guide the user step by step through:
      * Stage 0: System identity, domain, platform, and tier selection.
-     * Stage 1: Requirements elicitation (Lightweight PRD for Tier 1; BABOK BRD + Atlassian PRD + ISO 29148 SRD for Tier 2).
+     * Stage 1: Requirements elicitation. FAST-PATH: If user already provides, attaches, or points to an existing PRD, BRD, or SRD (or any single one of them), immediately read the file(s) and advance straight to Stage 2 without asking whether to create PRD, BRD, or SRD. Otherwise elicit lightweight PRD for Tier 1; BABOK BRD + Atlassian PRD + ISO 29148 SRD for Tier 2.
      * Stage 2: Architectural paradigm selection (Modular Monolith, Clean Architecture, EDA, FSD) and ADR drafting.
      * Stage 3: Data persistence, Redis caching lifecycle, and distributed locking with Kleppmann fencing tokens.
      * Stage 4: UI framework selection (Tailwind+shadcn, DaisyUI, Mantine, Chakra, AntD, MUI) and Frontend Aesthetic theme curation.

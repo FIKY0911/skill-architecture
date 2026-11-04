@@ -33,6 +33,9 @@ When this skill is invoked, you guide the user through software architecture gen
    If user inputs contain credentials, you must invoke `scripts/secret-scan.js` or substitute with `[REDACTED:<TYPE>]`.
 3. **Filesystem Scope Boundary**: Output writes are strictly confined to `./docs/` and installer backups in `~/.architect-skill-backup/`. You must never write outside these directories.
 4. **No Guesswork / No AI Hallucinations**: Every architecture decision must cite standard principles (Clean Architecture, Modular Monolith, EDA, Hexagonal, FSD) and authoritative requirement standards (Atlassian PRD, BABOK BRD, ISO/IEC/IEEE 29148:2018 SRD).
+5. **Context & Token Economy (High-Level vs Deep Analysis)**:
+   - **Trivial / Non-Technical Queries**: Deliver an immediate, high-level summary and concise conclusion. Minimize context and token overhead; omit boilerplate.
+   - **Heavy Technical / System Architecture Tasks**: Conduct rigorous first-principles analysis until the optimal solution is reached. Always present the analysis and obtain explicit developer approval before mutating files or executing system changes.
 
 ---
 
@@ -75,10 +78,11 @@ The skill operates across two distinct tracks:
 
 When invoked, immediately check if the user request is an isolated technical query or an architecture generation session:
 
-### 1.1 Direct Technical Query (Fast-Path Triage)
-If the user asks an isolated architecture question (e.g., "How does XFetch work in Redis?", "Explain Kleppmann fencing tokens", "Give me a Mermaid ERD for a user-order relationship"):
-- Provide an immediate, precise answer drawing directly from the authoritative files in `references/` or `assets/uml/`.
-- Do NOT force the user into the full multi-stage wizard unless they intend to build or document a system.
+### 1.1 Direct Technical Query & Non-Technical Triage (Fast-Path)
+- **Non-Technical / Trivial Questions**: Provide an immediate high-level summary and concise conclusion. Do NOT generate unnecessary text, filler, or boilerplate.
+- **Isolated Technical Queries** (e.g., "How does XFetch work in Redis?", "Explain Kleppmann fencing tokens", "Mermaid ERD syntax"):
+  - Provide an immediate, precise answer drawing directly from the authoritative files in `references/` or `assets/uml/`.
+  - Do NOT force the user into the full multi-stage wizard unless they intend to build or document a system.
 
 ### 1.2 State Inspection for Architecture Generation
 If the user requests system architecture, a new project design, or triggers `/architect`:
@@ -114,6 +118,14 @@ Ask for:
 ---
 
 ### Stage 1: Requirements Elicitation
+
+#### Fast-Track Auto-Ingestion (Existing PRD / BRD / SRD):
+- **Precondition**: If the user provides, attaches, points to, or already has existing requirements files (`PRD`, `BRD`, `SRD`, or any subset/single document among them):
+  1. **Immediate Ingestion**: Read the provided requirement document(s) directly using your file-reading tool.
+  2. **Zero-Prompt Bypass**: Do NOT ask the user whether they want to create/generate PRD, BRD, or SRD, and do NOT force them to choose options.
+  3. **Direct Progression**: Ingest the provided context and immediately advance straight to **Stage 2: Architectural Paradigm & Structural Boundaries**. If only one document is provided (e.g., only PRD), derive the architectural constraints directly from it without forcing the creation of missing documents.
+
+#### Standard Elicitation (When No Prior Requirements Are Provided):
 
 #### If Tier 1:
 Collect:
