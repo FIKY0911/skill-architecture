@@ -61,6 +61,10 @@ private/
 .aws/
 .gnupg/
 
+# Whitelist synthetic test fixtures for CI scanner verification
+!tests/fixtures/secrets/
+!tests/fixtures/secrets/**
+
 # Local Installer Backups
 .architect-skill-backup/
 *.bak
