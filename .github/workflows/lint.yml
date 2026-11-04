@@ -1,4 +1,4 @@
-name: CI Validation & Integrity
+name: Lint & Static Syntax Check
 on: [push, pull_request]
 jobs:
   validate:
