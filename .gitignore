@@ -85,9 +85,13 @@ desktop.ini
 *.swo
 *~
 
-# Test Coverage & Compilation Outputs
+# Test Coverage & Execution Outputs
 coverage/
 .nyc_output/
+test-results/
+test-output/
+*.test.log
+TEST_READY.md
 dist/
 build/
 out/
