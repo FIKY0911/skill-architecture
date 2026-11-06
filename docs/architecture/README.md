@@ -4,7 +4,7 @@ Dokumen ini menjelaskan keputusan arsitektural utama proyek, termasuk diagram C4
 
 ## Daftar Isi
 - **Keputusan Arsitektur** – lihat [`docs/architecture/decisions/README.md`](../architecture/decisions/README.md) (jika ada).
-- **Diagram C4** – diagram Mermaid berada di `architect-skill/assets/uml/` dan dapat direferensikan di sini.
+- **Diagram C4** – diagram Mermaid berada di `assets/uml/` dan dapat direferensikan di sini.
 
 ## Hubungan
 - **Requirement**: keputusan arsitektur didasarkan pada kebutuhan yang tercantum di [`../requirements/README.md`](../requirements/README.md).
