@@ -1,4 +1,0 @@
-# SECURITY
-
-Placeholder security policy.
-
