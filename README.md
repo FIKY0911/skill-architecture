@@ -4,8 +4,22 @@
 
 [![Zero-Egress Guaranteed](https://img.shields.io/badge/Security-Zero--Egress-success?style=flat-square)](SECURITY.md)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)](LICENSE)
+[![Documentation: Workflow](https://img.shields.io/badge/Docs-Workflow%20Guide-blueviolet?style=flat-square)](docs/workflow.md)
+[![Contributing: Welcome](https://img.shields.io/badge/Contributions-Welcome-brightgreen?style=flat-square)](CONTRIBUTING.md)
 [![Runtime: Node.js 18+](https://img.shields.io/badge/Node.js-%3E%3D18.0.0-green?style=flat-square)](https://nodejs.org)
 [![Agents: 7 Platforms](https://img.shields.io/badge/Agents-Claude%20%7C%20Cursor%20%7C%20Continue%20%7C%20Windsurf%20%7C%20Cline%20%7C%20Codex%20%7C%20Antigravity-orange?style=flat-square)](adapters/README.md)
+
+---
+
+<p align="center">
+  <a href="docs/workflow.md"><b>📖 Dokumentasi Alur (Workflow)</b></a> •
+  <a href="docs/quickstart.md"><b>🚀 Quickstart Guide</b></a> •
+  <a href="docs/wizard-guide.md"><b>🧙 Wizard Guide</b></a> •
+  <a href="adapters/README.md"><b>🤖 Multi-Agent Adapters</b></a> •
+  <a href="CONTRIBUTING.md"><b>🤝 Contributing</b></a> •
+  <a href="SECURITY.md"><b>🛡️ Security Policy</b></a> •
+  <a href="LICENSE"><b>📄 MIT License</b></a>
+</p>
 
 ---
 
