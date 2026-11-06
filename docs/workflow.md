@@ -16,6 +16,50 @@ Proyek ini terdiri dari beberapa domain utama:
 
 Alur kerja dimulai dari **Requirement** → **Arsitektur** → **Desain Sistem** → **Implementasi** → **UI** → **Testing** → **Release**.
 
+### Visualisasi Alur Kerja Sistem (End-to-End Workflow Diagram)
+
+```mermaid
+flowchart TD
+    classDef startClass fill:#1e293b,stroke:#38bdf8,stroke-width:2px,color:#f8fafc;
+    classDef stageClass fill:#0f172a,stroke:#818cf8,stroke-width:1.5px,color:#f8fafc;
+    classDef decisionClass fill:#312e81,stroke:#c084fc,stroke-width:2px,color:#f8fafc;
+    classDef fasttrackClass fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#f8fafc;
+    classDef verifyClass fill:#1c1917,stroke:#f59e0b,stroke-width:1.5px,color:#f8fafc;
+    classDef doneClass fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#f8fafc;
+
+    subgraph Phase1 ["1. Input & Elicitation Gate"]
+        START([User / Developer Prompt]) :::startClass --> CHK_REQ{Sudah Ada Dokumen Kebutuhan?<br/>PRD / BRD / SRD} :::decisionClass
+        CHK_REQ -- Ya: Fast-Track --> FAST_TRACK[Auto-Ingest Dokumen Kebutuhan Langsung<br/>Lewati Tahap 1 Langsung ke Arsitektur] :::fasttrackClass
+        CHK_REQ -- Belum: Tahap 1 --> STAGE1[Stage 1: Elisitasi Kebutuhan Formal<br/>- PRD Atlassian Agile<br/>- BRD BABOK Guide v3<br/>- SRD ISO/IEC/IEEE 29148 EARS] :::stageClass
+    end
+
+    subgraph Governance ["Dual-Track Token Economy & Approval Gate"]
+        GOV_CHK{Tipe Permintaan} :::decisionClass
+        GOV_CHK -- Non-Teknis / Sepele --> QUICK_RESP[Respons Ringkas: Kesimpulan Langsung] :::stageClass
+        GOV_CHK -- Teknis Berat --> DEEP_ANALYSIS[Analisis Mendalam First-Principles] :::stageClass
+        DEEP_ANALYSIS --> DEV_APPROVE{Persetujuan Developer?} :::decisionClass
+        DEV_APPROVE -- Revisi --> DEEP_ANALYSIS
+        DEV_APPROVE -- Disetujui --> STAGE2
+    end
+
+    FAST_TRACK --> STAGE2[Stage 2: Architectural Paradigm & Boundaries<br/>- Clean Architecture & Hexagonal<br/>- Modular Monolith & FSD v2.1<br/>- Event-Driven Architecture<br/>- Michael Nygard ADRs] :::stageClass
+    STAGE1 --> STAGE2
+
+    subgraph Phase2 ["2. Engineering Design & Modeling"]
+        STAGE2 --> STAGE3[Stage 3: Distributed System Design<br/>- Kleppmann Monotonic Fencing Tokens<br/>- Redis XFetch Anti-Stampede Caching<br/>- RDBMS Read/Write Split & Pool Sizing<br/>- Kafka/RabbitMQ Async Queues] :::stageClass
+        STAGE3 --> STAGE4[Stage 4: Senior Frontend & UI Frameworks<br/>- 6 Frameworks: shadcn, DaisyUI, Mantine, dll.<br/>- 8 Aesthetics: Bento Grid, Neubrutalism, dll.] :::stageClass
+        STAGE4 --> STAGE5[Stage 5: Visual UML & Mermaid Modeling<br/>- C4 Container Architecture<br/>- Sequence, ERD, State, & Activity Flow] :::stageClass
+    end
+
+    subgraph Phase3 ["3. Automated Verification & Isolation Gate"]
+        STAGE5 --> STAGE6[Stage 6: Output Verification & Sandboxing<br/>- Zero-Egress Network Neutralization<br/>- Secret Scanner: Masking .env & Token<br/>- SHA-256 Tool Pinning Verification] :::verifyClass
+        STAGE6 --> CHK_VALID{Semua Audit Lulus?} :::decisionClass
+        CHK_VALID -- Gagal --> REMEDIATE[Auto-Scrub & Remediasi Artefak] :::verifyClass
+        REMEDIATE --> STAGE6
+        CHK_VALID -- Lulus --> ARTIFACTS([Kompilasi Direktori ./docs/<br/>100% Bersih, Tervalidasi & Siap Eksekusi]) :::doneClass
+    end
+```
+
 > **Catatan Fast-Track Requirement:** Jika pengguna sudah memiliki atau melampirkan salah satu atau seluruh dokumen kebutuhan (`PRD.md`, `BRD.md`, `SRD.md`), sistem akan langsung membaca dokumen tersebut dan melompat langsung ke tahap **Arsitektur** tanpa menanyakan opsi pembuatan dokumen kebutuhan kembali.
 
 > **Prinsip Dual-Track Token & Context Economy:** Pertanyaan sepele atau non-teknis diselesaikan secara ringkas dengan kesimpulan tingkat tinggi demi efisiensi token. Untuk masalah teknis berat, agen melakukan analisis komprehensif hingga tuntas dan **wajib meminta persetujuan developer** sebelum melakukan perubahan berkas atau sistem.

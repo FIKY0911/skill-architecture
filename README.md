@@ -23,6 +23,50 @@ Unlike typical AI prompts that produce superficial code suggestions or make ungr
 5. **Absolute Credential Protection**: The skill is structurally prohibited from reading `.env` files, system credentials, SSH/AWS keys, certificates, private keys, or agent authentication tokens. Built-in secret scanning and automatic masking neutralize stray credentials before write operations.
 6. **Constructive Minimalism**: Pure Node.js implementation without external npm dependencies (`zero-dependency`), eliminating software supply chain risks.
 
+### End-to-End Architectural Workflow Diagram
+
+```mermaid
+flowchart TD
+    classDef startClass fill:#1e293b,stroke:#38bdf8,stroke-width:2px,color:#f8fafc;
+    classDef stageClass fill:#0f172a,stroke:#818cf8,stroke-width:1.5px,color:#f8fafc;
+    classDef decisionClass fill:#312e81,stroke:#c084fc,stroke-width:2px,color:#f8fafc;
+    classDef fasttrackClass fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#f8fafc;
+    classDef verifyClass fill:#1c1917,stroke:#f59e0b,stroke-width:1.5px,color:#f8fafc;
+    classDef doneClass fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#f8fafc;
+
+    subgraph Phase1 ["1. Input & Elicitation Gate"]
+        START([User / Developer Prompt]) :::startClass --> CHK_REQ{Existing Requirements?<br/>PRD / BRD / SRD} :::decisionClass
+        CHK_REQ -- Yes: Fast-Track --> FAST_TRACK[Auto-Ingest Requirements Directly<br/>Bypass Stage 1 directly to Architecture] :::fasttrackClass
+        CHK_REQ -- No: Interactive --> STAGE1[Stage 1: Formal Requirements Elicitation<br/>- PRD: Atlassian Agile<br/>- BRD: BABOK Guide v3<br/>- SRD: ISO/IEC/IEEE 29148 EARS] :::stageClass
+    end
+
+    subgraph Governance ["Dual-Track Token Economy & Approval Gate"]
+        GOV_CHK{Query Type} :::decisionClass
+        GOV_CHK -- Trivial / Non-Technical --> QUICK_RESP[Concise High-Level Summary] :::stageClass
+        GOV_CHK -- Heavy Technical Challenge --> DEEP_ANALYSIS[Deep First-Principles Analysis] :::stageClass
+        DEEP_ANALYSIS --> DEV_APPROVE{Developer Approval?} :::decisionClass
+        DEV_APPROVE -- Revise --> DEEP_ANALYSIS
+        DEV_APPROVE -- Approved --> STAGE2
+    end
+
+    FAST_TRACK --> STAGE2[Stage 2: Architectural Paradigm & Boundaries<br/>- Clean Architecture & Hexagonal<br/>- Modular Monolith & FSD v2.1<br/>- Event-Driven Architecture<br/>- Michael Nygard ADRs] :::stageClass
+    STAGE1 --> STAGE2
+
+    subgraph Phase2 ["2. Engineering Design & Modeling"]
+        STAGE2 --> STAGE3[Stage 3: Distributed System Design<br/>- Kleppmann Monotonic Fencing Tokens<br/>- Redis XFetch Anti-Stampede Caching<br/>- RDBMS Read/Write Split & Pool Sizing<br/>- Kafka/RabbitMQ Async Queues] :::stageClass
+        STAGE3 --> STAGE4[Stage 4: Senior Frontend & UI Frameworks<br/>- 6 Frameworks: shadcn, DaisyUI, Mantine, etc.<br/>- 8 Aesthetics: Bento Grid, Neubrutalism, etc.] :::stageClass
+        STAGE4 --> STAGE5[Stage 5: Visual UML & Mermaid Modeling<br/>- C4 Container Architecture<br/>- Sequence, ERD, State, & Activity Flow] :::stageClass
+    end
+
+    subgraph Phase3 ["3. Automated Verification & Isolation Gate"]
+        STAGE5 --> STAGE6[Stage 6: Output Verification & Sandboxing<br/>- Zero-Egress Network Neutralization<br/>- Secret Scanner: Masking .env & Token<br/>- SHA-256 Tool Pinning Verification] :::verifyClass
+        STAGE6 --> CHK_VALID{All Checks Pass?} :::decisionClass
+        CHK_VALID -- Fail --> REMEDIATE[Auto-Scrub & Remediate Artifacts] :::verifyClass
+        REMEDIATE --> STAGE6
+        CHK_VALID -- Pass --> ARTIFACTS([Compiled ./docs/ Output Tree<br/>100% Clean, Traceable & Production-Ready]) :::doneClass
+    end
+```
+
 ---
 
 ## 2. Two-Tier Execution Framework
