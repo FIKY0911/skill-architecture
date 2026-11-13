@@ -1,0 +1,11 @@
+.git
+.github
+.agents
+tests
+sandbox
+templates
+scripts/bundle-zip.js
+*.zip
+*.tgz
+.architect-wizard-state.json
+docs/.architect-wizard-state.json

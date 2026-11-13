@@ -1,6 +1,6 @@
 {
   "name": "skill-architecture",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Enterprise-grade, local-first, zero-egress software architecture generator and multi-agent skill installer.",
   "main": "scripts/wizard-state.js",
   "bin": {
@@ -36,7 +36,10 @@
     "clean-architecture",
     "zero-egress"
   ],
-  "author": "FIKY0911",
+  "author": {
+    "name": "FIKY0911",
+    "url": "https://github.com/FIKY0911"
+  },
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/FIKY0911/skill-architecture/issues"
@@ -44,5 +47,41 @@
   "homepage": "https://github.com/FIKY0911/skill-architecture#readme",
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "files": [
+    "SKILL.md",
+    "skill.yaml",
+    "LICENSE",
+    "README.md",
+    "adapters",
+    "assets",
+    "references",
+    "policies",
+    "runtime-firewall",
+    "scripts/install.js",
+    "scripts/install.sh",
+    "scripts/doctor.js",
+    "scripts/egress-guard.js",
+    "scripts/sanitize-input.js",
+    "scripts/secret-scan.js",
+    "scripts/validate-diagrams.js",
+    "scripts/validate-mermaid.js",
+    "scripts/validate-output.js",
+    "scripts/validate-structure.js",
+    "scripts/validate-ui-slop.js",
+    "scripts/wizard-state.js",
+    "scripts/audit-log.js",
+    "bin",
+    "docs"
+  ],
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/FIKY0911"
+  },
+  "contributors": [
+    {
+      "name": "FIKY0911",
+      "url": "https://github.com/FIKY0911"
+    }
+  ]
 }
