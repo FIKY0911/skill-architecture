@@ -115,39 +115,47 @@ Detailed installation mapping is documented in [`adapters/README.md`](adapters/R
 
 The toolkit includes a zero-dependency installer and configuration engine compatible with Linux, macOS, and Windows across all 7 supported AI agents.
 
-### 4.1 Zero-Clone Installation via npx
+### 4.1 Zero-Clone Installation via npm & npx
 
-Users do not need to clone this repository. You can install and configure `skill-architecture` across all AI agents with a single command:
+The package is officially published on the NPM Registry (`npm i skill-architecture`). Users do not need to clone this repository. You can install or run `skill-architecture` across all AI agents with a single command:
 
-#### Standard CLI Execution:
+#### Standard CLI Execution via `npx` (No Install Required):
 ```bash
-# Install globally to all supported AI agents
+# Install globally to all supported AI agents in one command
 npx skill-architecture --global
 
 # Target a specific AI agent directly (e.g., Antigravity, Cursor, or Claude)
-npx skill-architecture --global --target antigravity
-npx skill-architecture --global --target cursor
-npx skill-architecture --global --target claude
+npx skill-architecture --global --agent antigravity
+npx skill-architecture --global --agent cursor
+npx skill-architecture --global --agent claude
 
 # Local workspace installation
 npx skill-architecture --local --target all
 ```
 
-> [!NOTE]
-> Until the package is published to the public npm registry, users can run the exact same binary directly from GitHub:
-> ```bash
-> npx github:FIKY0911/skill-architecture --global
-> ```
+#### Install via `npm` (Global or Project Dependency):
+```bash
+# Install globally on your machine
+npm install -g skill-architecture
+skill-architecture --global
+
+# Or install as a dev dependency in your project
+npm install -D skill-architecture
+# or simply:
+npm i skill-architecture
+```
 
 #### Industry Standard via `npx skills` (skills.sh ecosystem by Vercel Labs):
 Because this repository conforms strictly to the open `SKILL.md` specification, users of the universal agent skill manager can also install it natively:
 ```bash
 # Add to all supported agents globally
+npx skills add skill-architecture -g
+# or from GitHub:
 npx skills add FIKY0911/skill-architecture -g
 
 # Add to a specific agent (e.g., Cursor or Claude Code)
-npx skills add FIKY0911/skill-architecture --agent cursor
-npx skills add FIKY0911/skill-architecture --agent claude-code
+npx skills add skill-architecture --agent cursor
+npx skills add skill-architecture --agent claude-code
 ```
 
 ---
