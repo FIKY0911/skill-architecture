@@ -566,6 +566,32 @@ if (require.main === module) {
   if (targetIdx !== -1) targetArg = args[targetIdx + 1];
   else if (agentIdx !== -1) targetArg = args[agentIdx + 1];
 
+  if (args.includes('--help') || args.includes('-h')) {
+    console.log(`
+Usage: skill-architecture [options]
+
+Universal Multi-Agent Architecture Skill Installer (Zero-Egress & Local-First)
+
+Options:
+  --global, -g         Install skill globally into user home directories (~/)
+  --local, -l          Install skill locally inside the current workspace (default if omitted)
+  --agent, --target    Target specific agent: claude | antigravity | cursor | continue | windsurf | cline | codex | all
+  --dry-run            Simulate installation and output plan without modifying disk
+  --uninstall          Remove previously installed skill configurations and restore backups
+  --detect             Detect supported AI agents installed on this machine
+  --interactive, -i    Launch interactive terminal wizard to select target agents
+  --help, -h           Show this help message
+
+Examples:
+  $ npx skill-architecture --global
+  $ npx skill-architecture --global --agent cursor
+  $ npx skill-architecture --global --target antigravity
+  $ npx skill-architecture --local --agent claude
+  $ npx skill-architecture --global --dry-run
+`);
+    process.exit(0);
+  }
+
   if (args.includes('--detect')) {
     const detected = detectInstalledAgents();
     console.log(JSON.stringify({ detectedAgents: detected.filter((a) => a.detected).map((a) => a.id), agents: detected }, null, 2));

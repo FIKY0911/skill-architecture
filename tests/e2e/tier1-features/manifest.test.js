@@ -71,10 +71,10 @@ describe('Tier 1: Core Root Metadata & Manifest', () => {
     const requiredFiles = [
       'SKILL.md',
       'README.md',
-      'CHANGELOG.md',
-      'CONTRIBUTING.md',
-      'SECURITY.md',
-      'PRIVACY.md',
+      'docs/community/CHANGELOG.md',
+      'docs/community/CONTRIBUTING.md',
+      'docs/community/SECURITY.md',
+      'docs/community/PRIVACY.md',
       'LICENSE'
     ];
 

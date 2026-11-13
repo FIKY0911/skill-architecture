@@ -7,10 +7,10 @@
     "scripts/secret-scan.js": "03584c0b825a43d6226dfd49a7e90980a8ce76f59b34f6af7c807f135f95ffac",
     "scripts/audit-log.js": "ff34cff89b691a55603097e8f5a0da25b339a3c580530a25cf30d51fb9003fb3",
     "scripts/validate-mermaid.js": "f3fdfa06fab2cb9b036783d3bb06bc75a073312572d37c90b1cea81e01951951",
-    "scripts/validate-structure.js": "1d88b1fce30d20f9f4dc4ac6b9de9509743d4909e7ea78e5bf548c6d972820bf",
+    "scripts/validate-structure.js": "3d907e1903d94dafb03c8529463f0e4b6270a72a98383a8b7adb1af910392d2f",
     "scripts/validate-output.js": "e4a67f2b643d34acbdc4c39be3ffc5681f7f25eb4db720d38b4b1f047fd26ce6",
-    "scripts/wizard-state.js": "b965f65824a60da7496d3c64a3e2abb28a4dc641bf2302a0c76b80488d16bc22",
-    "scripts/install.js": "64b52fae59effc788683354c0fba080f368b1b59590994a95269c74c25aa9d55",
+    "scripts/wizard-state.js": "a2794949ee6528224244290ab4f573cf20450b57585b7196137b32f91a692510",
+    "scripts/install.js": "0becd77a063f67c6153ac28d37f2cf3a075793834bd428957a22411919efe2ae",
     "scripts/doctor.js": "0d434b203f02cdd6ac60e981c6799ea366a392cfd8919564629a8e658bd13a24"
   }
 }

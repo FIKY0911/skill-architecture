@@ -5,10 +5,16 @@ All notable changes to `architect-skill` will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.1.0] - 2026-11-13
 
 ### Added
-- **Preview-safe text diagrams**: `assets/diagrams/*.md` (sequence, ERD, state, C4, activity) as ASCII `text` blocks plus tables, since VSCode markdown preview cannot render Mermaid. Mermaid remains as an optional extra.
+- **Native CLI One-Liner Distribution**: Added `bin: { "skill-architecture": "scripts/install.js" }` enabling zero-clone execution via `npx skill-architecture --global` or per-agent `--agent <name>`.
+- **Mobile UI Architecture Standards**: Comprehensive engineering guide (`assets/ui/mobile-ui.md`) supporting React Native (Expo/NativeWind/Tamagui), Flutter, native iOS (SwiftUI), and Android (Jetpack Compose).
+- **Strict Documentation-First Contract**: Enforced rule that all proposed web and mobile UI code must be cross-verified directly against official library documentation and MCP tools before rendering.
+- **Mid-Flight Wizard Pivot Protocol**: Added `scripts/wizard-state.js pivot` and Section 1.3 to `SKILL.md`, allowing developers to switch UI frameworks, aesthetics, or architecture styles mid-session without restarting.
+- **Offline ZIP Bundle Generator**: Added `scripts/bundle-zip.js` (`npm run bundle:zip`) generating a standalone ~450 KB archive (`architect-skill.zip`) for direct upload into Claude Projects, Custom GPTs, and Web AI UIs.
+- **MCP Catalog Documentation**: Section 4.4 in `README.md` detailing essential MCP servers (`context7`, `filesystem`, `shadcn-ui`, `neobrutalism`, `magicui`, `ui-registry`, `playwright`, `puppeteer`).
+- **Preview-safe text diagrams**: `assets/diagrams/*.md` (sequence, ERD, state, C4, activity) as ASCII `text` blocks plus tables, since VSCode markdown preview cannot render Mermaid.
 - `scripts/validate-diagrams.js` (pinned in runtime-firewall), `.mmd`/`.md` twin parity check, warning in `validate-output.js` for missing twins, `tests/diagrams.test.js`, SKILL.md dual-format rule and quality gate.
 - Anti-slop UI contract (`assets/ui/anti-slop.md`, `scripts/validate-ui-slop.js`).
 
@@ -16,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `redaction-rules.json`: URI-password and Android keystore rules are now idempotent, so masked output re-scans clean.
 - `validate-mermaid.js` and the e2e assertion helper no longer count ER cardinality tokens (`||--o{`) or quoted labels as curly braces.
 - `assets/uml/sequence.mmd` no longer contains a literal bearer-token phrase; Windsurf adapter now states zero-egress explicitly.
+- Centralized 9 shell installer scripts into unified `bin/install.sh` via root symlinks.
 
 ## [1.0.0] - 2026-10-28
 

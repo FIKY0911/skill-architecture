@@ -1,16 +1,21 @@
-# UI Anti-Slop Contract (Mandatory, All UI Tools)
+# UI Anti-Slop Contract (Mandatory, Web & Mobile UI)
 
-Applies to every UI tool: `neobrutalism`, `shadcn-ui`, `magicui`, `ui-registry`, `tailwindcss` MCP.
+Applies to every UI framework and ecosystem: Web (`neobrutalism`, `shadcn-ui`, `magicui`, `ui-registry`, `tailwindcss`) and Mobile (`React Native`, `Flutter`, `SwiftUI`, `Jetpack Compose`).
 
-## 1. Reference-First (no writing UI from memory)
-Before writing any UI code the agent MUST pull real references via MCP and record them in `docs/ui/[framework]/reference-log.md`:
-- `neobrutalism`: `get_theme`, `get_component`, `get_component_demo`
-- `shadcn-ui`: `get_component`, `get_component_demo`, `list_blocks`/`get_block`
-- `magicui`: component source + usage example
-- `ui-registry`: registry item source (Aceternity, Cult UI, SmoothUI, Kokonut, etc.)
-- `tailwindcss`: validate every utility class and theme config
+## 1. Documentation-First & Reference-First (Strict Rule: No UI From Memory)
+Before generating or presenting any UI code, the agent MUST verify syntax, props, and design tokens directly against official documentation:
+- **Mobile UI Frameworks (User-Selected Tech)**:
+  - If user selects **React Native / Expo**: Check official React Native, Expo, and NativeWind / Tamagui documentation (via Context7 or official docs).
+  - If user selects **Flutter**: Check Flutter API reference (via Context7 or official flutter.dev docs) for Widget trees, Themes, and Gestures.
+  - If user selects **SwiftUI / Jetpack Compose**: Conform strictly to Apple Human Interface Guidelines (HIG) and Android Material 3 specs.
+- **Web UI MCP Tools**:
+  - `neobrutalism`: `get_theme`, `get_component`, `get_component_demo`
+  - `shadcn-ui`: `get_component`, `get_component_demo`, `list_blocks`/`get_block`
+  - `magicui`: component source + usage example
+  - `ui-registry`: registry item source (Aceternity, Cult UI, SmoothUI, Kokonut, etc.)
+  - `tailwindcss`: validate every utility class and theme config
 
-Each log row: `tool | call | component/theme | date`. A component without a row MUST NOT be used.
+Each log row must be recorded in `docs/ui/[framework]/reference-log.md`: `ecosystem | framework | component/api | documentation_source | date`. Generating code without verified documentation is strictly forbidden.
 
 ## 2. Single Source of Truth for Theme
 - All color, radius, border width, shadow, spacing, font come from `theme-tokens.md` (CSS variables / Tailwind theme).

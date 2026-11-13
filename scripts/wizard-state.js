@@ -2,6 +2,7 @@
 /**
  * Wizard State Manager (wizard-state.js)
  * Manages session state persistence for Tier 1 and Tier 2 interactive wizard turns.
+ * Supports state pivots (revising architecture style, UI framework, or visual aesthetic mid-flight).
  */
 'use strict';
 
@@ -31,6 +32,14 @@ const VALID_UI_LIBRARIES = [
   'chakra',
   'antd',
   'mui',
+];
+
+const VALID_ARCHITECTURES = [
+  'clean-architecture',
+  'modular-monolith',
+  'event-driven',
+  'hexagonal',
+  'fsd',
 ];
 
 function initState(options = {}, stateFilePath = DEFAULT_STATE_PATH) {
@@ -86,6 +95,36 @@ function updateState(patch = {}, stateFilePath = DEFAULT_STATE_PATH) {
   return JSON.parse(maskedText);
 }
 
+function pivotStage(pivotOptions = {}, stateFilePath = DEFAULT_STATE_PATH) {
+  const current = loadState(stateFilePath) || initState({}, stateFilePath);
+  const patch = { selections: {} };
+
+  if (pivotOptions.stage !== undefined) {
+    patch.current_stage = Number(pivotOptions.stage);
+  }
+
+  if (pivotOptions.architecture) {
+    patch.selections.architecture_style = pivotOptions.architecture;
+    if (patch.current_stage === undefined) patch.current_stage = 2;
+  }
+
+  if (pivotOptions.ui_library) {
+    patch.selections.ui_library = VALID_UI_LIBRARIES.includes(pivotOptions.ui_library)
+      ? pivotOptions.ui_library
+      : current.selections.ui_library;
+    if (patch.current_stage === undefined) patch.current_stage = 4;
+  }
+
+  if (pivotOptions.fe_aesthetic) {
+    patch.selections.fe_aesthetic = VALID_AESTHETICS.includes(pivotOptions.fe_aesthetic)
+      ? pivotOptions.fe_aesthetic
+      : current.selections.fe_aesthetic;
+    if (patch.current_stage === undefined) patch.current_stage = 4;
+  }
+
+  return updateState(patch, stateFilePath);
+}
+
 function finalizeState(stateFilePath = DEFAULT_STATE_PATH) {
   return updateState({ status: 'completed', current_stage: 5 }, stateFilePath);
 }
@@ -103,6 +142,17 @@ if (require.main === module) {
     }
     const res = initState(opts);
     console.log(JSON.stringify(res, null, 2));
+  } else if (cmd === 'pivot' || cmd === 'revise') {
+    const args = process.argv.slice(3);
+    const opts = {};
+    for (let i = 0; i < args.length; i++) {
+      if (args[i] === '--stage' && args[i + 1]) opts.stage = args[++i];
+      else if (args[i] === '--architecture' && args[i + 1]) opts.architecture = args[++i];
+      else if (args[i] === '--ui-library' && args[i + 1]) opts.ui_library = args[++i];
+      else if (args[i] === '--aesthetic' && args[i + 1]) opts.fe_aesthetic = args[++i];
+    }
+    const res = pivotStage(opts);
+    console.log(JSON.stringify(res, null, 2));
   } else if (cmd === 'finalize') {
     const res = finalizeState();
     console.log(JSON.stringify(res, null, 2));
@@ -114,8 +164,10 @@ if (require.main === module) {
 module.exports = {
   VALID_AESTHETICS,
   VALID_UI_LIBRARIES,
+  VALID_ARCHITECTURES,
   initState,
   loadState,
   updateState,
+  pivotStage,
   finalizeState,
 };

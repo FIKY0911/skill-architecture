@@ -95,3 +95,5 @@ TEST_READY.md
 dist/
 build/
 out/
+*.zip
+*.tgz

@@ -111,44 +111,201 @@ Detailed installation mapping is documented in [`adapters/README.md`](adapters/R
 
 ---
 
-## 4. Installation & Lifecycle Management
+## 4. Installation & Configuration
 
-The toolkit includes a zero-dependency installer compatible with Linux, macOS, and Windows.
+The toolkit includes a zero-dependency installer and configuration engine compatible with Linux, macOS, and Windows across all 7 supported AI agents.
 
-### Automated Shell Installation (Linux / macOS):
+### 4.1 Zero-Clone Installation via npx
+
+Users do not need to clone this repository. You can install and configure `skill-architecture` across all AI agents with a single command:
+
+#### Standard CLI Execution:
 ```bash
-# Global installation for all agents (creates symlinks)
-./scripts/install.sh --global
+# Install globally to all supported AI agents
+npx skill-architecture --global
 
-# Local installation in the current project repository
-./scripts/install.sh --local
+# Target a specific AI agent directly (e.g., Antigravity, Cursor, or Claude)
+npx skill-architecture --global --target antigravity
+npx skill-architecture --global --target cursor
+npx skill-architecture --global --target claude
 
-# Dry-run inspection
-./scripts/install.sh --global --dry-run
+# Local workspace installation
+npx skill-architecture --local --target all
 ```
 
-### Direct Node.js Installation (Cross-Platform):
+> [!NOTE]
+> Until the package is published to the public npm registry, users can run the exact same binary directly from GitHub:
+> ```bash
+> npx github:FIKY0911/skill-architecture --global
+> ```
+
+#### Industry Standard via `npx skills` (skills.sh ecosystem by Vercel Labs):
+Because this repository conforms strictly to the open `SKILL.md` specification, users of the universal agent skill manager can also install it natively:
 ```bash
-# Preview installation plan without modifying disk (--dry-run)
+# Add to all supported agents globally
+npx skills add FIKY0911/skill-architecture -g
+
+# Add to a specific agent (e.g., Cursor or Claude Code)
+npx skills add FIKY0911/skill-architecture --agent cursor
+npx skills add FIKY0911/skill-architecture --agent claude-code
+```
+
+---
+
+### 4.2 Direct ZIP Package Upload (Zero-Terminal / Web AI UI)
+
+For users who want to use this skill directly inside web-based AI interfaces without using a terminal or command line:
+
+1. **Download the standalone ZIP package**:
+   - Download [`architect-skill.zip`](file:///home/fiky/Documents/Latihan Agent/SKILL/architect-skill/architect-skill.zip) directly from the repository / GitHub Releases or build it locally using `npm run bundle:zip`.
+2. **Upload to Your AI Agent Environment**:
+   - **Claude Desktop / Claude.ai Projects**: Attach or upload `architect-skill.zip` to your project knowledge base or custom instructions.
+   - **Google Antigravity / Gemini Workspace**: Place the unzipped contents into `~/.gemini/skills/architect-skill` or upload via the skills manager.
+   - **ChatGPT Custom GPT / Assistants**: Attach `architect-skill.zip` into the GPT's **Knowledge / Code Interpreter** storage.
+   - **Cursor / VS Code IDE**: Unzip directly into your project's root folder.
+
+The ZIP bundle contains the complete offline architecture rulebook, deterministic state machine, zero-egress safeguards, and industry reference standards in a compact ~450 KB archive.
+
+---
+
+### 4.3 Local & Monorepo Installation (For Contributors)
+
+```bash
+# Preview installation plan without touching disk (--dry-run)
 node scripts/install.js --global --dry-run
 
-# Install globally for all 7 AI agents in user home (~/)
+# Install globally for all 7 AI agents
 node scripts/install.js --global
 
-# Install globally or locally for a single specific AI agent (claude | antigravity | codex | cursor | continue | windsurf | cline)
+# Install for a single specific AI agent
 node scripts/install.js --global --target antigravity
 node scripts/install.js --local --target cursor
 
-# Uninstall and remove installed links cleanly
+# Complete clean uninstallation
 node scripts/install.js --global --uninstall
 node scripts/install.js --local --uninstall
 ```
 
-For full configuration details (per-agent setup, custom security policies, and GitHub publishing checklist), see [`docs/quickstart.md`](docs/quickstart.md).
+---
 
-### Automated Backup Protection:
-Prior to modifying or overwriting any agent configuration, the installer creates a timestamped backup in:
-`~/.architect-skill-backup/<timestamp>/<agent_name>/`
+### 4.4 Recommended MCP Servers (Model Context Protocol)
+
+To unlock the full potential of `skill-architecture` (especially for pulling official library documentation without guessing and generating zero-slop UI components), install the following recommended MCP servers into your agent's configuration (`mcp_config.json`):
+
+#### 1. Core Documentation & Verification MCPs
+- **`context7` (`@upstash/context7-mcp`)**: **Essential.** Resolves up-to-date official documentation and API references for libraries, frameworks, and SDKs (React, Next.js, Flutter, React Native, Tailwind, Redis, Prisma, etc.) directly in the prompt context.
+  ```json
+  "context7": {
+    "command": "npx",
+    "args": ["-y", "@upstash/context7-mcp"]
+  }
+  ```
+- **`filesystem` (`@modelcontextprotocol/server-filesystem`)**: Allows the agent to read workspace files and write architecture blueprints cleanly into `./docs/`.
+  ```json
+  "filesystem": {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-filesystem", "/path/to/your/workspace"]
+  }
+  ```
+- **`fetch` (`mcp-server-fetch`)**: Fetches raw specifications, RFC standards, or web APIs offline or via trusted networks.
+  ```json
+  "fetch": {
+    "command": "uvx",
+    "args": ["mcp-server-fetch"]
+  }
+  ```
+
+#### 2. Design System & UI Engineering MCPs (Strict Documentation-First)
+These MCP servers enforce the **Anti-Slop UI Contract**, preventing the agent from hallucinating arbitrary CSS or mock UI components:
+- **`shadcn-ui` (`@jpisnice/shadcn-ui-mcp-server`)**: Standard accessible UI components and blocks.
+  ```json
+  "shadcn-ui": {
+    "command": "npx",
+    "args": ["-y", "@jpisnice/shadcn-ui-mcp-server"]
+  }
+  ```
+- **`neobrutalism` (`neobrutalism-mcp-server`)**: Neo-brutalist components, high-contrast borders, and pop palettes.
+  ```json
+  "neobrutalism": {
+    "command": "npx",
+    "args": ["-y", "neobrutalism-mcp-server"]
+  }
+  ```
+- **`magicui` (`@magicuidesign/mcp`)**: Interactive micro-interactions, landing page effects, and animations.
+  ```json
+  "magicui": {
+    "command": "npx",
+    "args": ["-y", "@magicuidesign/mcp"]
+  }
+  ```
+- **`ui-registry` (`ui-registry-mcp`)**: Catalog of 12+ modern design registries (Aceternity, Cult UI, SmoothUI, Kokonut).
+  ```json
+  "ui-registry": {
+    "command": "npx",
+    "args": ["-y", "ui-registry-mcp"]
+  }
+  ```
+- **`tailwindcss` (`tailwindcss-mcp`)**: Validates Tailwind CSS utility classes and theme configuration tokens.
+  ```json
+  "tailwindcss": {
+    "command": "npx",
+    "args": ["-y", "tailwindcss-mcp"]
+  }
+  ```
+
+#### 3. Browser Automation & Visual Testing MCPs
+- **`playwright` (`@playwright/mcp@latest`)**: Automated headless browser testing and visual screenshot validation.
+  ```json
+  "playwright": {
+    "command": "npx",
+    "args": ["-y", "@playwright/mcp@latest"]
+  }
+  ```
+- **`puppeteer` (`@modelcontextprotocol/server-puppeteer`)**: Headless browser automation and pixel-perfect PDF document rendering.
+  ```json
+  "puppeteer": {
+    "command": "npx",
+    "args": ["-y", "@modelcontextprotocol/server-puppeteer"]
+  }
+  ```
+
+---
+
+### 4.5 Agent Configuration Mapping
+
+When installed, each agent consumes the skill via its native configuration architecture:
+
+| Target Agent | Installation Location | Integration Mechanism |
+| :--- | :--- | :--- |
+| **Google Antigravity (AGY)** | `~/.gemini/skills/architect-skill` & `~/.agy/skills/` | Loaded as native agent skill & callable via prompt/commands |
+| **Claude Desktop / Code** | `~/.claude/skills/architect-skill/SKILL.md` | Declarative markdown skill injected into agent context |
+| **Cursor IDE** | `~/.cursor/rules/architect-skill.mdc` | Semantic context rule with glob pattern indexing |
+| **Continue.dev** | `~/.continue/prompts/architect-skill.prompt` | Custom architecture design prompt template |
+| **Windsurf** | `~/.codeium/windsurf/.windsurfrules` or workspace `.windsurfrules` | System-level architectural directives |
+| **Cline** | Workspace `.clinerules` | Autonomous agent behavioral constraints |
+| **OpenAI Codex** | `~/.codex/skills/architect-skill` | Skill package for multi-turn architectural codegen |
+
+### 4.4 Automated Backup & Rollback Protection
+Prior to modifying or overwriting any agent configuration, the installer automatically creates a timestamped snapshot in:
+```
+~/.architect-skill-backup/<timestamp>/<agent_name>/
+```
+To inspect or revert, simply restore files from the respective timestamp folder or execute `node scripts/install.js --uninstall`.
+
+### 4.5 Execution Protocol (How to Run)
+1. **Interactive Design Wizard**: Ask the agent:
+   > *"Activate architect-skill to design a new system: [System Name/Domain]"*
+2. **Deterministic Stages**: Follow the Tier 1/2 elicitation process (Requirements $\to$ Architecture Style $\to$ Frontend Aesthetics $\to$ System Design).
+3. **Artifact Generation**: Review outputs automatically generated into `./docs/` (`docs/requirements/`, `docs/architecture/`, `docs/diagrams/`).
+4. **Verification**: Run `npm test` and `npm run validate:mermaid` to ensure zero hallucinations and valid UML diagrams.
+
+For extensive guides and documentation, explore the [`docs/`](docs/) directory:
+- [Workflow Guide](docs/workflow.md)
+- [Quickstart & Configuration Details](docs/quickstart.md)
+- [Wizard Execution Guide](docs/wizard-guide.md)
+- [Multi-Agent Adapters Reference](adapters/README.md)
+- [Documentation Index & Specifications](docs/spec/README.id.md)
+- [Community & Security Policies](docs/community/CONTRIBUTING.md)
 
 ---
 

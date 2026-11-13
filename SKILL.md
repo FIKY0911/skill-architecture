@@ -1,6 +1,6 @@
 ---
 name: "architect-skill"
-version: "1.0.0"
+version: "1.1.0"
 description: "Senior Software Architect & System Designer: Deterministic Tier 1/2 wizard, PRD/BRD/SRD requirements, Clean Architecture, distributed system design, senior frontend aesthetics, and zero-egress local-first security."
 author: "John McCarthy & Architect Skill Contributors"
 license: "MIT"
@@ -94,6 +94,26 @@ If the user requests system architecture, a new project design, or triggers `/ar
    ```bash
    node scripts/wizard-state.js init --tier [tier1|tier2] --project [project-name]
    ```
+
+### 1.3 Mid-Flight Pivot & Revision Protocol (Changing Architecture or UI Mid-Way)
+
+If at any point during or after the wizard the user is not satisfied with the architectural style, wants to switch diagrams, changes database strategy, or requests a different UI framework / visual aesthetic:
+
+1. **Zero Frustration / Non-Destructive Pivot**:
+   - Never force the user to start completely from scratch or re-answer unaffected questions (e.g., changing UI aesthetic from Neubrutalism to Bento Grid does NOT require re-entering PRD requirements or database design).
+2. **Selective State Rollback**:
+   - Invoke `scripts/wizard-state.js pivot` to update state target and rewind `current_stage`:
+     ```bash
+     # To change UI framework or visual aesthetic mid-way:
+     node scripts/wizard-state.js pivot --aesthetic bento-grid --ui-library tailwind-shadcn
+     
+     # To change core architectural style or diagram model mid-way:
+     node scripts/wizard-state.js pivot --architecture modular-monolith --stage 2
+     ```
+3. **Artifact Regeneration & Differential Cleanup**:
+   - Regenerate only the target subsystem files (`./docs/ui/` or `./docs/architecture/` or `./docs/diagrams/`).
+   - Clean up deprecated twin files or old aesthetic tokens cleanly.
+   - Re-run validation gates (`node scripts/validate-mermaid.js` and `node scripts/validate-ui-slop.js`).
 
 ---
 
@@ -222,18 +242,19 @@ VSCode markdown preview does NOT render Mermaid. Every `.mmd` diagram MUST ship 
 
 ---
 
-### Stage 4: Senior Frontend Aesthetics & UI Frameworks
+### Stage 4: Senior Frontend & Mobile Aesthetics (Web & Mobile UI)
 
 If the system has a user interface (Web, Mobile, Desktop):
 
-#### Prompt P4.1: UI Component Framework
-Offer standard industry component libraries:
-1. **Tailwind CSS + shadcn/ui** (Recommended: Zero-runtime CSS, Radix UI accessibility, full local code ownership).
-2. **DaisyUI** (Zero-runtime semantic CSS component classes).
-3. **Mantine UI** (Feature-rich enterprise React library with CSS Modules).
-4. **Chakra UI / Ark UI** (State-machine driven accessible UI).
-5. **Ant Design (AntD)** (Enterprise back-office and administration portals).
-6. **Material UI (MUI)** (Google Material Design standard).
+#### Prompt P4.1: UI Component Framework (Web & Mobile)
+Offer standard industry UI & Mobile component libraries:
+1. **Web: Tailwind CSS + shadcn/ui** (Zero-runtime CSS, Radix UI accessibility, full local code ownership).
+2. **Web: DaisyUI, Mantine, Chakra UI, Ant Design, or MUI** (Comprehensive enterprise web libraries).
+3. **Mobile: React Native (Expo) + NativeWind / Tamagui** (Cross-platform iOS/Android sharing Tailwind tokens).
+4. **Mobile: Flutter** (High-fidelity cross-platform custom canvas & animation engine).
+5. **Mobile: Native iOS (SwiftUI) & Android (Jetpack Compose)** (Platform-native declarative UI with HIG/Material 3 standards).
+
+*Reference documentation: `assets/ui/ui-libraries.md` and `assets/ui/mobile-ui.md`.*
 
 #### Prompt P4.2: Senior Frontend Visual Aesthetics
 Offer 8 curated senior design aesthetic themes:
@@ -246,11 +267,18 @@ Offer 8 curated senior design aesthetic themes:
 7. **Neumorphism / Soft UI**: Opposing directional soft shadows on continuous neutral surfaces (with mandatory high-contrast text reinforcements).
 8. **Retro / Cyberpunk / Terminal**: Monospaced typography, CRT scanlines, neon phosphor green/amber accents on pitch-black surfaces.
 
-#### Prompt P4.3: Anti-Slop Contract (Mandatory, all UI tools)
-Read `assets/ui/anti-slop.md` before writing any UI. Rules:
-- Reference-first: pull real component/theme/demo source via the UI MCP (neobrutalism, shadcn-ui, magicui, ui-registry, tailwindcss) and log it in `reference-log.md`. No UI from memory.
-- One token source (`theme-tokens.md`); no hardcoded colors, arbitrary values, tinted translucent backgrounds on text/badges, or one-off cards deviating from the theme.
-- Gate: `node scripts/validate-ui-slop.js <ui-src-dir>` must exit 0.
+#### Prompt P4.3: Anti-Slop & Strict Documentation-First Contract (Web & Mobile)
+Read `assets/ui/anti-slop.md` before generating or proposing any UI code. Strict Rules:
+- **Zero-Guesswork / Documentation-First Verification**:
+  - Dilarang mengarang atau menebak sintaks komponen dari ingatan AI (Zero UI Hallucinations).
+  - Untuk Mobile UI (React Native, Flutter, SwiftUI, Jetpack Compose, Tamagui, NativeWind), agent **WAJIB** memverifikasi sintaks, props, dan API resmi langsung dari dokumentasi terkini (via Context7 MCP untuk pustaka/SDK atau Web Search/Browser untuk dokumentasi resmi framework).
+  - Untuk Web UI: Ambil kode sumber komponen/tema nyata via UI MCP yang terpasang (`neobrutalism`, `shadcn-ui`, `magicui`, `ui-registry`, `tailwindcss`) dan catat di `reference-log.md`.
+- **User Tech Flexibility**:
+  - Pilihan teknologi mobile sepenuhnya menyesuaikan preferensi dan stack yang diinginkan user (React Native/Expo, Flutter, SwiftUI, Jetpack Compose, Kotlin Multiplatform, dll.).
+- **One Token Source (`theme-tokens.md`)**:
+  - Dilarang menggunakan nilai warna/border sembarangan (*hardcoded arbitrary values*); seluruh elemen UI wajib merujuk pada token tema yang telah disepakati.
+- **Verification Gate**:
+  - `node scripts/validate-ui-slop.js <ui-src-dir>` must exit 0.
 
 #### Stage 4 Artifacts:
 - `./docs/ui/[framework-name]/reference-log.md` (MCP calls and components used, per anti-slop contract).

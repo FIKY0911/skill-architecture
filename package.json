@@ -1,0 +1,48 @@
+{
+  "name": "skill-architecture",
+  "version": "1.1.0",
+  "description": "Enterprise-grade, local-first, zero-egress software architecture generator and multi-agent skill installer.",
+  "main": "scripts/wizard-state.js",
+  "bin": {
+    "skill-architecture": "scripts/install.js",
+    "architect-skill": "scripts/install.js"
+  },
+  "type": "commonjs",
+  "scripts": {
+    "doctor": "node scripts/doctor.js",
+    "test": "node --test tests/*.test.js",
+    "validate:structure": "node scripts/validate-structure.js",
+    "validate:diagrams": "node scripts/validate-diagrams.js",
+    "validate:mermaid": "node scripts/validate-mermaid.js",
+    "scan:secrets": "node scripts/secret-scan.js",
+    "install:all": "./bin/install.sh --target all",
+    "install:agy": "./bin/install.sh --target agy",
+    "install:claude": "./bin/install.sh --target claude",
+    "install:cursor": "./bin/install.sh --target cursor",
+    "bundle:zip": "node scripts/bundle-zip.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FIKY0911/skill-architecture.git"
+  },
+  "keywords": [
+    "ai-agent",
+    "skills",
+    "antigravity",
+    "claude-skill",
+    "cursor-rules",
+    "system-design",
+    "software-architecture",
+    "clean-architecture",
+    "zero-egress"
+  ],
+  "author": "FIKY0911",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/FIKY0911/skill-architecture/issues"
+  },
+  "homepage": "https://github.com/FIKY0911/skill-architecture#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
